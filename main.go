@@ -22,16 +22,28 @@ func changeDisplay(clock *c.Clock) {
 	}
 }
 
+// TODO: Write some actual alarms
+var alarms = []*c.Alarm{
+	{
+		Hour:   16,
+		Minute: 12,
+		Callback: func() {
+			fmt.Println("🦄")
+			os.Exit(1)
+		},
+	},
+}
+
 func main() {
 	clock := c.Clock{
 		Initialize: true,
 	}
 
 	clock.On("second", changeDisplay)
+	clock.On("minute", c.MaybeCallAlarmsForTime(alarms))
 
 	for {
 		clock.SetTime(time.Now())
-		// TODO: base this on refresh rate
 		time.Sleep(50 * time.Millisecond)
 	}
 }

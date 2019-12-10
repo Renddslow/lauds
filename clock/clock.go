@@ -17,7 +17,6 @@ type Clock struct {
 	Hour          int
 	Minute        int
 	Second        int
-	ShowColon     bool
 	HasChange     bool
 	Initialize    bool
 	Subscriptions Subscriptions
@@ -36,7 +35,7 @@ func (c *Clock) GetString() string {
 	hourStr := padStart(strconv.Itoa(c.Hour))
 	minuteStr := padStart(strconv.Itoa(c.Minute))
 	var timeString string
-	if c.ShowColon {
+	if c.Second%2 > 0 {
 		timeString = hourStr + ":" + minuteStr
 	} else {
 		timeString = hourStr + " " + minuteStr
@@ -66,7 +65,6 @@ func (c *Clock) SetTime(t time.Time) {
 
 	if c.Second != t.Second() {
 		c.Second = t.Second()
-		c.ShowColon = !c.ShowColon
 		hasChange = true
 	}
 
